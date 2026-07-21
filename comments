@@ -1,0 +1,6 @@
+docker build -t calculator-api:latest .
+kubectl apply -f k8s-deployment.yaml
+kubectl apply -f k8s-service.yaml
+curl -X POST http://localhost:30050/calculate \
+  -H "Content-Type: application/json" \
+  -d '{"operation":"add","a":5,"b":3}'
