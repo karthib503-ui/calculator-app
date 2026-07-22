@@ -8,6 +8,6 @@ spec:
     app: calculator-api
   ports:
     - protocol: TCP
-      port: 5000
-      targetPort: 5000
-      nodePort: 30050
+      port: 5000         # Port inside the cluster
+      targetPort: 5000   # Port on the pod/container
+      nodePort: 30050    # Port exposed on your machine/node
