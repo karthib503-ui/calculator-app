@@ -1,9 +1,15 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__)
 
 HOSTNAME = os.getenv('HOSTNAME', 'unknown-host')
+
+
+@app.route('/', methods=['GET'])
+def home():
+    """Serves the Calculator Web Interface."""
+    return render_template('index.html')
 
 
 @app.route('/health', methods=['GET'])

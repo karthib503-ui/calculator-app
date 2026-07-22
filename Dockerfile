@@ -12,17 +12,20 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Copy installed packages from builder stage
-COPY --from=builder /root/.local /root/.local
+# Create non-root user first
+RUN useradd -m appuser
 
+# Copy installed packages to appuser's home directory
+COPY --from=builder /root/.local /home/appuser/.local
 COPY app.py .
 
-# Ensure locally installed packages are on PATH
-ENV PATH=/root/.local/bin:$PATH \
+# Update PATH for appuser
+ENV PATH=/home/appuser/.local/bin:$PATH \
     PYTHONUNBUFFERED=1
 
-# Run as non-root user
-RUN useradd -m appuser
+# Ensure ownership is given to appuser
+RUN chown -R appuser:appuser /home/appuser /app
+
 USER appuser
 
 EXPOSE 5000

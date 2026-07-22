@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator App</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f4f4f9; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
+        input, select, button { width: 100%; margin-bottom: 1rem; padding: 8px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        #result { font-weight: bold; font-size: 1.2rem; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Calculator</h2>
+        <input type="number" id="numA" placeholder="First Number (a)">
+        <select id="op">
+            <option value="add">+</option>
+            <option value="subtract">-</option>
+            <option value="multiply">*</option>
+            <option value="divide">/</option>
+        </select>
+        <input type="number" id="numB" placeholder="Second Number (b)">
+        <button onclick="calculate()">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function calculate() {
+            const a = parseFloat(document.getElementById('numA').value);
+            const b = parseFloat(document.getElementById('numB').value);
+            const operation = document.getElementById('op').value;
+
+            const response = await fetch('/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ operation, a, b })
+            });
+
+            const data = await response.json();
+            if (data.result !== undefined) {
+                document.getElementById('result').innerText = `Result: ${data.result}`;
+            } else {
+                document.getElementById('result').innerText = `Error: ${data.error || 'Failed'}`;
+            }
+        }
+    </script>
+</body>
+</html>
