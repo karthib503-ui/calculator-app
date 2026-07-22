@@ -17,7 +17,9 @@ RUN useradd -m appuser
 
 # Copy installed packages to appuser's home directory
 COPY --from=builder /root/.local /home/appuser/.local
+# Copy app code and templates
 COPY app.py .
+COPY templates/ ./templates/
 
 # Update PATH for appuser
 ENV PATH=/home/appuser/.local/bin:$PATH \
